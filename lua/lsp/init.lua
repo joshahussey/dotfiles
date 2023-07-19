@@ -1,0 +1,5 @@
+require("lsp.mason")
+require("lsp.cmp")
+require("lsp.lsp")
+require("lsp.tsserver")
+require("lsp.null-ls")

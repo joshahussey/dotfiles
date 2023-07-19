@@ -1,0 +1,29 @@
+vim.g['lightline'] = {
+    colorscheme = 'powerline',
+    active = {
+        left = {
+            { 'mode',     'paste' },
+            { 'gitbranch' },
+            { 'readonly', 'filename', 'modified' }
+        },
+        right = {
+            { 'lineinfo' },
+            { 'percent' },
+            { 'filetype' },
+            { 'errors' }
+        }
+    },
+    component_function = {
+        gitbranch = 'FugitiveHead',
+        errors = "LspErrors"
+            }
+}
+
+--function LspErrors()
+--    if vim.tbl_isempty(vim.lsp.buf_get_clients(0)) then
+--    return
+--else
+--    return vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR})
+--end
+--end
+

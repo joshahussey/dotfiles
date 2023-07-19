@@ -1,0 +1,8 @@
+require("misc.remap")
+require("misc.set")
+--require("misc.lightline")
+require("misc.java-debug")
+require("misc.utils")
+require("misc.debuggerui")
+require("misc.js-ts-debug")
+require("misc.lualine")
