@@ -42,6 +42,15 @@ M.lsp_keymaps = function(bufnr)
 		vim.lsp.buf.signature_help()
 	end, opts)
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
+	vim.keymap.set("n", "<leader>da", ":lua attach_to_debug()<CR>")
+	vim.keymap.set("n", "<F5>", ':lua require"dap".continue()<CR>')
+	vim.keymap.set("n", "<F6>", ':lua require"dap".step_over()<CR>')
+	vim.keymap.set("n", "<F7>", ':lua require"dap".step_into()<CR>')
+	vim.keymap.set("n", "<F8>", ':lua require"dap".step_out()<CR>')
+	vim.keymap.set("n", "<leader>b", ':lua require"dap".toggle_breakpoint()<CR>')
+	vim.keymap.set("n", "<leader>B", ':lua require"dap".set_breakpoint(vim.fn.input("Condition: "))<CR>')
+	vim.keymap.set("n", "<leader>bl", ':lua require"dap".set_breakpoint(nil,nil,vim.fn.input("Log: "))<CR>')
+	vim.keymap.set("n", "<leader>dr", ':lua require"dap".repl.open()<CR>')
 end
 --CMP Remards for "on_attach"
 M.cmp_keymaps = function(lsp, cmp, cmp_select)
@@ -52,7 +61,6 @@ M.cmp_keymaps = function(lsp, cmp, cmp_select)
 		["<C-Space>"] = cmp.mapping.complete(),
 	})
 end
-
 --Debugger Remaps
 M.debug_keys = function()
 	local opts = { noremap = true, silent = true }
@@ -60,8 +68,64 @@ M.debug_keys = function()
 		require("misc.debuggerui").toggle()
 	end, opts)
 end
+--LazyGit
+M.lazygit = function()
+	vim.keymap.set("n", "<leader>gs", "<cmd>LazyGit<CR>")
+	vim.keymap.set("n", "<leader>gc", "<cmd>LazyGitConfig<CR>")
+end
+--Harpoon
+M.harpoon = function(mark, ui)
+	vim.keymap.set("n", "<leader>a", mark.add_file)
+	vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+
+	vim.keymap.set("n", "<C-h>", function()
+		ui.nav_file(1)
+	end)
+	vim.keymap.set("n", "<C-t>", function()
+		ui.nav_file(2)
+	end)
+	vim.keymap.set("n", "<C-n>", function()
+		ui.nav_file(3)
+	end)
+	vim.keymap.set("n", "<C-s>", function()
+		ui.nav_file(4)
+	end)
+end
+--Telescope
+M.telescope = function(builtin)
+	vim.keymap.set("n", "<leader>pb", builtin.buffers, {})
+	vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
+	vim.keymap.set("n", "<C-p>", builtin.git_files, {})
+	vim.keymap.set("n", "<leader>ps", function()
+		builtin.grep_string({ search = vim.fn.input("Grep > ") })
+	end)
+end
+M.undotree = function()
+	vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+end
+M.oil = {
+    ["<leader>pv"] = "actions.open",
+    ["<CR>"] = "actions.select",
+    ["<C-s>"] = "actions.select_vaplit",
+    ["<C-h>"] = "actions.select_split",
+    ["<C-t>"] = "actions.select_tab",
+    ["<C-p>"] = "actions.preview",
+    ["<C-c>"] = "actions.close",
+    ["<C-l>"] = "actions.refresh",
+    ["-"] = "actions.parent",
+    ["_"] = "actions.open_cwd",
+    ["<leader>cd"] = "actions.cd",
+    ["~"] = "actions.tcd",
+    ["<leader>h"] = "actions.toggle_hidden",
+    ["<leader>t"] = "actions.open_terminal"
+}
+--Return to dashboard
+vim.keymap.set("n", "<leader>db", function()
+    vim.cmd([[Dashboard]])
+end)
 --Return to Netrw
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+--vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", require("oil").open, {desc = "Open Parent Directory"})
 --Move and Indent lines in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -100,5 +164,7 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 vim.keymap.set("n", "<leader><leader>", function()
 	vim.cmd("so")
 end)
+--Remap Capslock to Esc
+vim.keymap.set("i", "<CAPS>", "<Esc>")
 
 return M
