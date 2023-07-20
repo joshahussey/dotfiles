@@ -117,7 +117,13 @@ M.oil = {
     ["<leader>cd"] = "actions.cd",
     ["~"] = "actions.tcd",
     ["<leader>h"] = "actions.toggle_hidden",
-    ["<leader>t"] = "actions.open_terminal"
+    ["<leader>t"] = "actions.open_terminal",
+    ["<leader>mt"] = {callback = ':lua Mark_oil_source_target()<CR>'},
+    ["<leader>md"] = {callback = ':lua Mark_oil_destination_target()<CR>'},
+    ["<leader>mr"] = {callback = ':lua Remove_oil_target()<CR>'},
+    ["<leader>mm"] = {callback = ':lua Oil_move()<CR>'},
+    ["<leader>mc"] = {callback = ':lua Oil_copy()<CR>'},
+    ["<leader>oc"] = {callback = ':lua Clear_oil_targets()<CR>'},
 }
 --Return to dashboard
 vim.keymap.set("n", "<leader>db", function()
