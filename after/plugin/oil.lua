@@ -35,8 +35,7 @@ require("oil").setup({
 			return false
 		end,
 	},
-
-	float = {
+--[[	float = {
 		padding = 2,
 		max_width = 0,
 		max_height = 0,
@@ -48,18 +47,9 @@ require("oil").setup({
 		override = function(conf)
 			return conf
 		end,
-	},
+	},]]--
 	preview = {
-		max_width = 0.9,
-		min_width = { 40, 0.4 },
-		width = nil,
-		max_height = 0.9,
-		min_height = { 5, 0.1 },
-		height = nil,
-		border = "rounded",
-		win_options = {
-			winblend = 0,
-		},
+        width = 240,
 	},
 	progress = {
 		max_width = 0.9,

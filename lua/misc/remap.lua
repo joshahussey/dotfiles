@@ -1,56 +1,32 @@
+local function desc(description)
+    return { noremap = true, silent = true, desc = description }
+end
 --Set MapLeader
 vim.g.mapleader = " "
 local M = {}
 --LSP Remaps for "on_attach"
 M.lsp_keymaps = function(bufnr)
-	local opts = { noremap = true, silent = true }
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-	vim.keymap.set("n", "gr", function()
-		vim.lsp.buf.references()
-	end, opts)
-	vim.keymap.set("n", "gd", function()
-		vim.lsp.buf.definition()
-	end, opts)
-	vim.keymap.set("n", "K", function()
-		vim.lsp.buf.hover()
-	end, opts)
-	vim.keymap.set("n", "<leader>vws", function()
-		vim.lsp.buf.workspace_symbol()
-	end, opts)
-	vim.keymap.set("n", "<leader>vd", function()
-		vim.diagnostic.open_float()
-	end, opts)
-	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next()
-	end, opts)
-	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_prev()
-	end, opts)
-	vim.keymap.set("n", "<leader>vca", function()
-		vim.lsp.buf.code_action()
-	end, opts)
-	vim.keymap.set("n", "<leader>vrr", function()
-		vim.lsp.buf.references()
-	end, opts)
-	vim.keymap.set("n", "<leader>vrn", function()
-		vim.lsp.buf.rename()
-	end, opts)
-	vim.keymap.set("i", "<C-h>", function()
-		vim.lsp.buf.signature_help()
-	end, opts)
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc("LSP:Go to definition"))
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", desc("LSP:Hover"))
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", desc("LSP:Rename"))
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", desc("LSP:Open float"))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", desc("LSP:Call Hierachy"))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>vws", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", desc("LSP:Workspace Symbol"))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>vd", "<cmd>lua vim.diagnostic.open_float()<CR>", desc("LSP:Diagnostic Float"))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "[d", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc("LSP:Diagnostic Next"))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "]d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc("LSP:Diagnostic Previous"))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>vca", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc("LSP:Code Action"))
+	vim.api.nvim_buf_set_keymap(bufnr,"i", "<C-h>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", desc("LSP:LSP: Signature Help"))
 	vim.cmd([[ command! Format execute 'lua vim.lsp.buf.format()' ]])
-	vim.keymap.set("n", "<leader>da", ":lua attach_to_debug()<CR>")
-	vim.keymap.set("n", "<F5>", ':lua require"dap".continue()<CR>')
-	vim.keymap.set("n", "<F6>", ':lua require"dap".step_over()<CR>')
-	vim.keymap.set("n", "<F7>", ':lua require"dap".step_into()<CR>')
-	vim.keymap.set("n", "<F8>", ':lua require"dap".step_out()<CR>')
-	vim.keymap.set("n", "<leader>b", ':lua require"dap".toggle_breakpoint()<CR>')
-	vim.keymap.set("n", "<leader>B", ':lua require"dap".set_breakpoint(vim.fn.input("Condition: "))<CR>')
-	vim.keymap.set("n", "<leader>bl", ':lua require"dap".set_breakpoint(nil,nil,vim.fn.input("Log: "))<CR>')
-	vim.keymap.set("n", "<leader>dr", ':lua require"dap".repl.open()<CR>')
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>da", ":lua attach_to_debug()<CR>",desc('Debug: Attach'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<F5>", ":lua require'dap'.continue()<CR>",desc('Debug: Continue'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<F6>", ":lua require'dap'.step_over()<CR>",desc('Debug: Step Over'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<F7>", ":lua require'dap'.step_into()<CR>",desc('Debug: Step Into'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<F8>", ":lua require'dap'.step_out()<CR>",desc('Debug: Step Out'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>",desc('Debug: Toggle Breakpoint'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Condition: '))<CR>",desc('Debug: Conditional Breakpoint'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>bl", ":lua require'dap'.set_breakpoint(nil,nil,vim.fn.input('Log: '))<CR>",desc('Debug: Log Point'))
+	vim.api.nvim_buf_set_keymap(bufnr,"n", "<leader>dr", ":lua require'dap'.repl.open()<CR>",desc('Debug: Open REPL'))
 end
 --CMP Remards for "on_attach"
 M.cmp_keymaps = function(lsp, cmp, cmp_select)
@@ -63,10 +39,9 @@ M.cmp_keymaps = function(lsp, cmp, cmp_select)
 end
 --Debugger Remaps
 M.debug_keys = function()
-	local opts = { noremap = true, silent = true }
 	vim.keymap.set("n", "<leader>db", function()
 		require("misc.debuggerui").toggle()
-	end, opts)
+	end, desc("Debug: Toggle Debugger UI"))
 end
 --LazyGit
 M.lazygit = function()
@@ -96,6 +71,13 @@ M.telescope = function(builtin)
 	vim.keymap.set("n", "<leader>pb", builtin.buffers, {})
 	vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
 	vim.keymap.set("n", "<C-p>", builtin.git_files, {})
+    vim.keymap.set("n", "<leader>lg", builtin.live_grep, {})
+    vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+    vim.keymap.set("n", "<leader>ch", builtin.git_commits, desc("Telescope: Git Commits"))
+    vim.keymap.set("n", "<leader>fc", builtin.git_bcommits, desc("Telescope: Git File Commit History"))
+    vim.keymap.set("n", "<leader>/", builtin.current_buffer_fuzzy_find, desc("Telescope: Find In File"))
+    vim.keymap.set("n", "<leader>di", builtin.diagnostics, desc("Telescope: Diagnostics"))
+    vim.keymap.set("n", "<leader>qf", builtin.quickfix, desc("Telescope: List Quickfix"))
 	vim.keymap.set("n", "<leader>ps", function()
 		builtin.grep_string({ search = vim.fn.input("Grep > ") })
 	end)
@@ -106,10 +88,10 @@ end
 M.oil = {
     ["<leader>pv"] = "actions.open",
     ["<CR>"] = "actions.select",
-    ["<C-s>"] = "actions.select_vaplit",
+    ["<C-s>"] = "actions.select_vsplit",
     ["<C-h>"] = "actions.select_split",
     ["<C-t>"] = "actions.select_tab",
-    ["<C-p>"] = "actions.preview",
+    ["<C-v>"] = "actions.preview",
     ["<C-c>"] = "actions.close",
     ["<C-l>"] = "actions.refresh",
     ["-"] = "actions.parent",
@@ -125,10 +107,15 @@ M.oil = {
     ["<leader>mc"] = {callback = ':lua Oil_copy()<CR>'},
     ["<leader>oc"] = {callback = ':lua Clear_oil_targets()<CR>'},
 }
+
+M.glow = function(bufnr)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gl", require('misc.glow-functions').toggle(), desc("Toggle Glow"))
+end
+
 --Return to dashboard
-vim.keymap.set("n", "<leader>db", function()
+vim.keymap.set("n", "<leader>hh", function()
     vim.cmd([[Dashboard]])
-end)
+end, desc("Return to Dashboard"))
 --Return to Netrw
 --vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>pv", require("oil").open, {desc = "Open Parent Directory"})
@@ -136,27 +123,27 @@ vim.keymap.set("n", "<leader>pv", require("oil").open, {desc = "Open Parent Dire
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 --Not sure
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+vim.keymap.set("n", "J", "mzJ`z", desc("Join Lines"))
+vim.keymap.set("n", "<C-d>", "<C-d>zz", desc("Jump Down Half Page"))
+vim.keymap.set("n", "<C-u>", "<C-u>zz", desc("Jump Up Half Page"))
+vim.keymap.set("n", "n", "nzzzv", desc("Jump to next match"))
+vim.keymap.set("n", "N", "Nzzzv", desc("Jump to previous match"))
 --buffer next/previous
 vim.keymap.set("n", "<leader>[", "<cmd>:bprevious<CR>")
 vim.keymap.set("n", "<leader>]", "<cmd>:bnext<CR>")
 --CutCopyPaste
 vim.keymap.set("x", "<leader>p", [["_dP]])
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], desc("Copy to clipboard"))
+vim.keymap.set("n", "<leader>Y", [["+Y]], desc("Copy to clipboard"))
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 -- Copilot 'Accept'
-vim.api.nvim_set_keymap("i", "<C-a>", 'copilot#Accept("")', { expr = true, silent = true, script = true })
+vim.api.nvim_set_keymap("i", "<C-a>", 'copilot#Accept("")', { expr = true, silent = true, script = true, desc = "Copilot Accept" })
 -- This is going to get me cancelled
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, desc("Format"))
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")

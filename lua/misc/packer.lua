@@ -14,17 +14,21 @@ return require("packer").startup(function(use)
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
 	--Highlighting/Context
-	use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
+	use({"nvim-treesitter/nvim-treesitter",
+		requires = { "JoosepAlviste/nvim-ts-context-commentstring" },
+		run = ":TSUpdate",
+	})
 	use("nvim-treesitter/playground")
 	use("nvim-treesitter/nvim-treesitter-context")
 	use("terrortylor/nvim-comment")
+    use({"ellisonleao/glow.nvim", config = function() require("glow").setup() end})
 	--File navigation and versioning
 	use({
 		"glepnir/dashboard-nvim",
 		event = "VimEnter",
-        config = function()
-            require('dashboard').setup(require('misc.dashboard-config').config)
-        end,
+		config = function()
+			require("dashboard").setup(require("misc.dashboard-config").config)
+		end,
 	})
 	use("theprimeagen/harpoon")
 	use("mbbill/undotree")
