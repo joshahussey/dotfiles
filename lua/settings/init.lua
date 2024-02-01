@@ -1,0 +1,5 @@
+require('settings.settings')
+require('settings.remap')
+require('settings.utils')
+require('settings.colorschemes')
+require('settings.yankhighlight')

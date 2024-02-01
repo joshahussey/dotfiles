@@ -1,2 +1,3 @@
-require("misc")
-require("lsp")
+require("manager")
+require("settings")
+require("pluginextension")
